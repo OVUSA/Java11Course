@@ -9,15 +9,17 @@ package labs.practice4;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.util.Objects;
 import java.util.concurrent.locks.Condition;
 import static labs.practice4.Rating.NOT_RATED;
 
 
-public class Product {
+public abstract class Product {
     public static final BigDecimal DISCOUNT_RATE= BigDecimal.valueOf(0.1);
-    private int id;
-    private String name;
-    private BigDecimal price;
+    private  final int id;
+    private final String name;
+    private final BigDecimal price;
     //private Condition condition;
 
 
@@ -32,6 +34,7 @@ public class Product {
     }
 
     public Product (){
+        this(0, "no name", BigDecimal.ZERO);
 
     }
 
@@ -42,37 +45,16 @@ public class Product {
         this.rating = NOT_RATED;
 
     }
-
-
-
-    public void addCaution(String caution) {
-        this.caution = caution;
-    }
-
-    private String caution;
-
     public int getId() {
         return id;
-    }
-
-    public void setId(final int id) {
-        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(final String name) {
-        this.name = name;
-    }
-
     public BigDecimal getPrice() {
         return price;
-    }
-
-    public void setPrice(final BigDecimal price) {
-        this.price = price;
     }
 
     // Discount 10%
@@ -84,4 +66,26 @@ public class Product {
       return rating;
   }
 
+  public abstract Product applyRating(Rating newRating);
+
+    public LocalDate getBestBefore(){ // best before today
+        return LocalDate.now();
+    }
+
+    public String toString(){
+        return "Products{ "+ "id= "+ id +", name "+name+ ", price = "+price+ "}";
+  }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id && Objects.equals(name, product.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
