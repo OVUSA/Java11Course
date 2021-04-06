@@ -11,4 +11,9 @@ public class ProductManager {
     public Product createProduct(int id, String name, BigDecimal price, LocalDate bestBefore){
         return new Drink(id, name,price, bestBefore);
     }
+    public void printProducts(Comparator<Product> sorter){
+        List<Product> productList = new ArrayList<Product>(products.keySey());
+        productList.sort(sorter);
+        StringBulider txt = new StringBuiler();
+    }
 }
