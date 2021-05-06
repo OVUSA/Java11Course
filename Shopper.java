@@ -6,8 +6,9 @@ class Shopper extends Thread {
 		  for ( int i =0; i < 10;i++) {
 			  cookieCount++;
 			  System.out.println(Thread.currentThread().getName()+ " is thinking");
-			  pencil.unlock();
+			 
 		  }
+		   pencil.unlock();
 	  }
 
 }
