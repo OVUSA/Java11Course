@@ -1,0 +1,52 @@
+package TryLockDemo;
+
+import java.util.concurrent.locks.*;
+public class CalendarUser extends Thread{
+
+    private static ReentrantLock marker = new ReentrantLock();
+    private static final String [] WEEKDAYS = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
+    private static int today = 0;
+    String name ;
+
+    public CalendarUser(String name){
+        this.name = name;
+    }
+
+    public void run(){
+        while(today < WEEKDAYS.length - 1){
+            if( this.getName().contains("Writer")){
+                marker.lock();
+                try{
+                    today = (today+1)%7;
+                    System.out.println(this.getName()+ " updated date to "+ WEEKDAYS[today]);
+                }catch(Exception e){
+                    e.printStackTrace();}
+                {marker.unlock();}
+
+        }else {
+                marker.lock();
+                try{
+                    System.out.println(this.getName()+ " see that today is "+ WEEKDAYS[today]);
+                }catch(Exception ex){
+                    ex.printStackTrace();
+                }finally {
+                    marker.unlock();
+                }
+                }
+            }
+    }
+}
+
+class ReadWriteLockDemo{
+    public static void main(String [] args){
+        // create ten reader threads
+        for ( int i = 0; i < 10; i++){
+            new CalendarUser("Reader-"+i).start();
+        }
+
+        //... but only two writer threads.
+        for ( int i = 0; i < 2;i++){
+            new CalendarUser("Writer-"+i).start();
+        }
+    }
+}
