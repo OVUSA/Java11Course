@@ -17,6 +17,7 @@ public class Philosopher extends Thread{
 
     }
     public void run(){
+        int sushiEaten = 0;
         while(sushiCount > 0){ // eat sushi until it is all gone
 
             //pick up chopstick
@@ -27,20 +28,17 @@ public class Philosopher extends Thread{
                 // take piece of sushi
                 if (sushiCount > 0) {
                     sushiCount--;
+                    sushiEaten++;
                     System.out.println(this.name + " took a piece!Sushi remaining: " + sushiCount);
                 }
 
-                if (sushiCount == 10)
-                    System.out.println(1 / 0);
-
-
-
-            }finally {
+               }finally {
                 // put down chopsticks
                 secondChopstick.unlock();
                 firstChopstick.unlock();
             }
-            }
+        }
+        System.out.println(name + " took "+ sushiEaten);
 
     }
 }
@@ -50,8 +48,8 @@ class DeadLockDemo{
         Lock chopstickB = new ReentrantLock();
         Lock chopstickC = new ReentrantLock();
         new Philosopher("Barron",chopstickA,chopstickB).start();
-        new Philosopher("Olya",chopstickB,chopstickC).start();
-        new Philosopher("Steve",chopstickA,chopstickC).start();
+        new Philosopher("Olya",chopstickA,chopstickB).start();
+        new Philosopher("Steve",chopstickA,chopstickB).start();
 
 
     }
