@@ -23,17 +23,25 @@ public class Philosopher extends Thread{
             firstChopstick.lock();
             secondChopstick.lock();
 
-            // take piece of sushi
-            if (sushiCount > 0){
-                sushiCount--;
-                System.out.println(this.name+ " took a piece!Sushi remaining: "+sushiCount);
+            try {
+                // take piece of sushi
+                if (sushiCount > 0) {
+                    sushiCount--;
+                    System.out.println(this.name + " took a piece!Sushi remaining: " + sushiCount);
+                }
+
+                if (sushiCount == 10)
+                    System.out.println(1 / 0);
+
+
+
+            }finally {
+                // put down chopsticks
+                secondChopstick.unlock();
+                firstChopstick.unlock();
             }
-            // put down chopsticks
+            }
 
-            secondChopstick.unlock();
-            firstChopstick.unlock();
-
-        }
     }
 }
 class DeadLockDemo{
